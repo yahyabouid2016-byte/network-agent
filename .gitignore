@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+agent.log
+status.json
+events.json
+ai_decision.json
+config.local.json
+.env

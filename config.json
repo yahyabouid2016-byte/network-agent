@@ -1,0 +1,25 @@
+{
+  "agent": {
+    "name": "network-agent",
+    "interval": 10,
+    "log_file": "agent.log"
+  },
+  "layers": {
+    "link": { "enabled": true, "interfaces": ["wlan0", "wlan1"] },
+    "wifi": { "enabled": true, "interfaces": ["wlan0"], "expected_mode": "AP" },
+    "network": {
+      "enabled": true,
+      "interfaces": [{ "name": "wlan0", "expected_ip": "your ip addr", "expected_prefix": 24 }],
+      "gateway": "your ip addr"
+    },
+    "services": { "enabled": true, "systemd": ["dnsmasq"], "processes": ["hostapd"] },
+    "connectivity": { "enabled": true, "targets": ["8.8.8.8", "1.1.1.1"], "dns_test": "google.com" }
+  },
+  "auto_fix": { "enabled": true, "max_retries": 3 },
+  "ai": {
+    "enabled": true,
+    "provider": "groq",
+    "api_key": "your API key",
+    "model": "your model name"
+  }
+}
