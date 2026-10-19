@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network Agent Dashboard</title>
+    <meta http-equiv="refresh" content="5">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #0f172a; color: #e2e8f0; padding: 20px; }
+        header { text-align: center; margin-bottom: 30px; padding: 20px; background: #1e293b; border-radius: 12px; }
+        header h1 { color: #38bdf8; margin-bottom: 8px; }
+        .status-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 30px; }
+        .card { background: #1e293b; padding: 20px; border-radius: 12px; border: 1px solid #334155; }
+        .card h3 { color: #38bdf8; margin-bottom: 15px; border-bottom: 1px solid #334155; padding-bottom: 8px; }
+        .item { display: flex; justify-content: space-between; padding: 8px 0; }
+        .badge { padding: 4px 10px; border-radius: 6px; font-weight: bold; font-size: 0.85em; }
+        .ok { background: #064e3b; color: #6ee7b7; }
+        .error { background: #7f1d1d; color: #fca5a5; }
+        .ai-card { background: #0f172a; padding: 20px; border-radius: 8px; border-left: 4px solid #a855f7; }
+        .ai-row { display: flex; gap: 12px; padding: 8px 0; border-bottom: 1px solid #1e293b; }
+        .ai-row strong { color: #94a3b8; min-width: 140px; }
+        footer { text-align: center; margin-top: 40px; color: #64748b; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🌐 Network Agent Dashboard</h1>
+        <p>Last update: {{ status.timestamp or 'N/A' }}</p>
+    </header>
+
+    <main>
+        <div class="status-grid">
+            <!-- Services -->
+            <div class="card">
+                <h3>Services</h3>
+                {% if status.services %}
+                    {% for name, state in status.services.items() %}
+                        <div class="item">
+                            <span>{{ name }}</span>
+                            <span class="badge {{ 'ok' if state == 'ok' else 'error' }}">{{ 'OK' if state == 'ok' else 'ERROR' }}</span>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p>No data</p>
+                {% endif %}
+            </div>
+
+            <!-- Agent Status -->
+            <div class="card">
+                <h3>Agent</h3>
+                <div class="item">
+                    <span>Status</span>
+                    <span class="badge {{ 'ok' if status.agent == 'running' else 'error' }}">
+                        {{ 'Running' if status.agent == 'running' else 'Stopped' }}
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI Decision -->
+        {% if ai.root_cause %}
+        <div class="card" style="margin-bottom: 30px;">
+            <h3>🤖 Last AI Decision</h3>
+            <div class="ai-card">
+                <div class="ai-row"><strong>Timestamp:</strong> <span>{{ ai.timestamp }}</span></div>
+                <div class="ai-row"><strong>Root Cause:</strong> <span>{{ ai.root_cause }}</span></div>
+                <div class="ai-row"><strong>Confidence:</strong> <span>{{ (ai.confidence * 100) | round(0) }}%</span></div>
+                <div class="ai-row"><strong>Safe to Auto:</strong> 
+                    <span class="badge {{ 'ok' if ai.safe_to_auto else 'error' }}">{{ 'Yes' if ai.safe_to_auto else 'No' }}</span>
+                </div>
+                <div class="ai-row"><strong>Message:</strong> <span>{{ ai.message }}</span></div>
+            </div>
+        </div>
+        {% endif %}
+    </main>
+
+    <footer>
+        <p>Network Agent Dashboard — Auto-refresh every 5s</p>
+    </footer>
+</body>
+</html>
