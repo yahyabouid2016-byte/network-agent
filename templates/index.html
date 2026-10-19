@@ -25,7 +25,7 @@
 </head>
 <body>
     <header>
-        <h1>🌐 Network Agent Dashboard</h1>
+        <h1> Network Agent Dashboard</h1>
         <p>Last update: {{ status.timestamp or 'N/A' }}</p>
     </header>
 
@@ -61,7 +61,7 @@
         <!-- AI Decision -->
         {% if ai.root_cause %}
         <div class="card" style="margin-bottom: 30px;">
-            <h3>🤖 Last AI Decision</h3>
+            <h3> Last AI Decision</h3>
             <div class="ai-card">
                 <div class="ai-row"><strong>Timestamp:</strong> <span>{{ ai.timestamp }}</span></div>
                 <div class="ai-row"><strong>Root Cause:</strong> <span>{{ ai.root_cause }}</span></div>
